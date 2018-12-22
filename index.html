@@ -7,25 +7,71 @@
     <meta name="author" content="Rafael Conde">
     <meta name="viewport" content="initial-scale=1.0" />
     <link rel="stylesheet" href="styles.css"/>
+    <script src="utils/SalsaCalendar.min.js"></script>
+    <link rel="stylesheet" href="utils/SalsaCalendar.min.css">
   </head>
   <body>
-    <h1>Visit us in Amsterdam</h1>
-    <p>
-      If you are a friend of Rafa or Debs, and whish to stay in Amsterdam, let us know if you'd like to stay with us.
-    </p>
-    <form name="test" method="POST" data-netlify="true">
-      <p>
-        <label>Your Name: <input type="text" name="name" /></label>
-      </p>
-      <p>
-        <label>Your Email: <input type="email" name="email" /></label>
-      </p>
-      <p>
-        <label>Message: <textarea name="message"></textarea></label>
-      </p>
-      <p>
-        <button type="submit">Send</button>
-      </p>
-    </form>
+    <div class="clip">
+    </div>
+
+    <div class="card">
+      <div class="header">
+        <h1>Visit us in Amsterdam 🇳🇱</h1>
+        <p>
+          If you are a friend of Rafa or Debs, and wish to stay in Amsterdam — let us know if you'd like to stay with us.
+        </p>
+      </div>
+      <form name="test" method="POST" data-netlify="true">
+        <p><label>Your Name: <input type="text" name="name" /></label></p>
+        <p><label>Your Email: <input type="email" name="email" /></label></p>
+        <p><label>Check in: <input type="text" id="checkin" class="salsa-calendar-input" autocomplete="off" name="arrival" value="" /></label></p>
+        <p><label>Check out: <input type="text" id="checkout" class="salsa-calendar-input" autocomplete="off" name="departure" value="" /></label></p>
+        <p><label>Message: <textarea name="message"></textarea></label></p>
+        <p><button type="submit">
+          Book
+          <span id="nights-no">
+            <span class="counter"></span>
+            <span class="singular" style="display:none;">night</span>
+            <span class="plural" style="display:none;">nights</span>
+          </span>
+        </button></p>
+      </form>
+    </div>
+
+    <script>
+      var calendar_from = new SalsaCalendar({
+        inputId: 'checkin',
+        lang: 'en',
+        range: {
+            min: 'today'
+        },
+        calendarPosition: 'top',
+        fixed: false,
+        connectCalendar: true
+      });
+
+      var calendar_to = new SalsaCalendar({
+        inputId: 'checkout',
+        lang: 'en',
+        range: {
+          min: 'today'
+        },
+        calendarPosition: 'top',
+        fixed: false
+      });
+
+      new SalsaCalendar.Connector({
+        from: calendar_from,
+        to: calendar_to,
+        maximumInterval: 16,
+        minimumInterval: 1
+      });
+
+      new SalsaCalendar.NightsCalculator({
+        from: calendar_from,
+        to: calendar_to,
+        nightsNo: 'nights-no'
+      });
+    </script>
   </body>
 </html>
